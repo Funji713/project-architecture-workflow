@@ -1,0 +1,7 @@
+interface:
+  display_name: "Project Architecture Workflow"
+  short_description: "Build an implementation-ready project architecture."
+  default_prompt: "Use $project-architecture-workflow to design the smallest viable architecture for this project."
+
+policy:
+  allow_implicit_invocation: true
