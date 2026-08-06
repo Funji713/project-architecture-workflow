@@ -1,6 +1,6 @@
 ---
 name: project-architecture-workflow
-description: Design or evolve an implementation-ready software project architecture with minimal unnecessary complexity. Use when Codex needs to start a new project, plan a substantial feature, assess module boundaries, choose a directory layout, define data or service interfaces, or turn requirements into an executable architecture plan. Do not use for a small contained code change or isolated bug fix.
+description: Design or evolve an implementation-ready software project architecture with minimal unnecessary complexity. Use when Codex needs to start a new project, plan a substantial feature, assess module boundaries, choose a directory layout, define data or service interfaces, turn requirements into an executable architecture plan, or keep implementation progress and architecture conformance visible. Do not use for a small contained code change or isolated bug fix.
 ---
 
 # Project Architecture Workflow
@@ -62,6 +62,21 @@ Describe the architecture in the smallest useful form:
 
 Use a diagram only when it reveals a relationship that the concise component list cannot.
 
+## Maintain Architecture Control Artifacts
+
+For a greenfield project, an architecture change, or work with more than one vertical slice, create and maintain these two files in the target project:
+
+- `ARCHITECTURE.md`: The approved implementation specification and decision record.
+- `IMPLEMENTATION_STATUS.md`: The current execution state and evidence for each slice.
+
+Do not create them for an isolated code change unless the user requests persistent planning or tracking. Read [architecture-control-template.md](references/architecture-control-template.md) before creating either file. Keep the files concise, factual, and synchronized with executable code; they are controls, not retrospective documentation.
+
+Before implementation, define measurable acceptance criteria, module ownership, boundary contracts, the data model or external interfaces that affect the critical flow, and validation for each vertical slice. Mark assumptions and unresolved decisions explicitly rather than representing them as settled design.
+
+Update `IMPLEMENTATION_STATUS.md` at the start and end of every slice. A slice is only `verified` when its stated validation evidence exists. Do not use `complete` or `verified` to mean that code was merely written.
+
+When implementation needs to depart from the approved shape, record the deviation, its reason, impact, and decision before starting dependent work. Update `ARCHITECTURE.md`, then update the affected slice and validation plan. Do not silently let implementation become the undocumented architecture.
+
 ## Greenfield Execution
 
 1. Implement or scaffold the smallest end-to-end path first.
@@ -88,9 +103,20 @@ Before implementation or handoff, verify that the proposed shape answers:
 
 If the design cannot answer one of these questions, resolve that gap before expanding scope.
 
+## Architecture Conformance Gates
+
+Run a lightweight conformance check before starting a slice, after it is implemented, and before handoff:
+
+1. Confirm the slice has a specification, owner modules, acceptance criteria, and validation method in the control artifacts.
+2. Compare the actual imports, public interfaces, data ownership, configuration, and tests with the approved boundary contracts.
+3. Record validation commands, test results, or manual acceptance evidence in `IMPLEMENTATION_STATUS.md`.
+4. Resolve or explicitly approve every architecture deviation. Do not advance a dependent slice with an unrecorded deviation.
+
+For existing projects, start with the minimum architecture map needed for the requested change. Do not attempt to retroactively document the whole repository before making progress.
+
 ## Communication
 
-- Report the chosen shape, key tradeoffs, first vertical slice, and validation plan.
+- Report the chosen shape, key tradeoffs, first vertical slice, validation plan, and current status or blocker.
 - Surface only decisions that need user approval: product behavior, meaningful cost, external state, or irreversible compatibility changes.
 - Keep detailed reasoning internal unless the user asks for an architecture document or comparison.
 
